@@ -4,7 +4,8 @@ import React from "react";
 import Alert from "antd/lib/alert";
 import Tabs from "antd/lib/tabs";
 import * as Grid from "antd/lib/grid";
-import Layout from "@/components/admin/Layout";
+import { Layout } from "@/components/ApplicationArea";
+import AdminPageLayout from "@/components/admin/Layout";
 import { CounterCard } from "@/components/admin/CeleryStatus";
 import { WorkersTable, QueuesTable, OtherJobsTable } from "@/components/admin/RQStatus";
 
@@ -86,7 +87,7 @@ class Jobs extends React.Component {
     };
 
     return (
-      <Layout activeTab="jobs">
+      <AdminPageLayout activeTab="jobs">
         <div className="p-15">
           {error && <Alert type="error" message="Failed loading status. Please refresh." />}
 
@@ -115,7 +116,7 @@ class Jobs extends React.Component {
             </React.Fragment>
           )}
         </div>
-      </Layout>
+      </AdminPageLayout>
     );
   }
 }
@@ -123,6 +124,10 @@ class Jobs extends React.Component {
 export default {
   path: "/admin/queries/jobs",
   title: "RQ Status",
-  render: (routeParams, currentRoute, location) => <Jobs key={location.path} {...routeParams} />,
+  render: (routeParams, currentRoute, location) => (
+    <Layout.DefaultAuthenticated>
+      <Jobs key={location.path} {...routeParams} />
+    </Layout.DefaultAuthenticated>
+  ),
   resolve: { currentPage: "jobs" },
 };

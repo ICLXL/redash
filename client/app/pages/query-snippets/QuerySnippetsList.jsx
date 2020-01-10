@@ -4,6 +4,7 @@ import React from "react";
 import Button from "antd/lib/button";
 import Modal from "antd/lib/modal";
 import PromiseRejectionError from "@/lib/promise-rejection-error";
+import { Layout } from "@/components/ApplicationArea";
 import Paginator from "@/components/Paginator";
 import QuerySnippetDialog from "@/components/query-snippets/QuerySnippetDialog";
 
@@ -217,8 +218,10 @@ export default [
   {
     path: "/query_snippets",
     title: "Query Snippets",
-    render: (routeParams, currentRoute, location) => (
-      <QuerySnippetsListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+    render: (routeParams, currentRoute) => (
+      <Layout.DefaultAuthenticated>
+        <QuerySnippetsListPage routeParams={routeParams} currentRoute={currentRoute} />
+      </Layout.DefaultAuthenticated>
     ),
     resolve: {
       currentPage: "query_snippets",
@@ -227,8 +230,10 @@ export default [
   {
     path: "/query_snippets/:querySnippetId(new|[0-9]+)",
     title: "Query Snippets",
-    render: (routeParams, currentRoute, location) => (
-      <QuerySnippetsListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+    render: (routeParams, currentRoute) => (
+      <Layout.DefaultAuthenticated>
+        <QuerySnippetsListPage routeParams={routeParams} currentRoute={currentRoute} />
+      </Layout.DefaultAuthenticated>
     ),
     resolve: {
       currentPage: "query_snippets",

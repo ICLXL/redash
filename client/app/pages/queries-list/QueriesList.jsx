@@ -1,5 +1,6 @@
 import React from "react";
 
+import { Layout } from "@/components/ApplicationArea";
 import PageHeader from "@/components/PageHeader";
 import Paginator from "@/components/Paginator";
 import { QueryTagsControl } from "@/components/tags-control/TagsControl";
@@ -13,7 +14,7 @@ import LoadingState from "@/components/items-list/components/LoadingState";
 import * as Sidebar from "@/components/items-list/components/Sidebar";
 import ItemsTable, { Columns } from "@/components/items-list/components/ItemsTable";
 
-import Layout from "@/components/layouts/ContentWithSidebar";
+import ListPageLayout from "@/components/layouts/ContentWithSidebar";
 
 import { Query } from "@/services/query";
 import { currentUser } from "@/services/auth";
@@ -91,8 +92,8 @@ class QueriesList extends React.Component {
     return (
       <div className="container">
         <PageHeader title={controller.params.title} />
-        <Layout className="m-l-15 m-r-15">
-          <Layout.Sidebar className="m-b-0">
+        <ListPageLayout className="m-l-15 m-r-15">
+          <ListPageLayout.Sidebar className="m-b-0">
             <Sidebar.SearchInput
               placeholder="Search Queries..."
               value={controller.searchTerm}
@@ -106,8 +107,8 @@ class QueriesList extends React.Component {
               value={controller.itemsPerPage}
               onChange={itemsPerPage => controller.updatePagination({ itemsPerPage })}
             />
-          </Layout.Sidebar>
-          <Layout.Content>
+          </ListPageLayout.Sidebar>
+          <ListPageLayout.Content>
             {!controller.isLoaded && <LoadingState />}
             {controller.isLoaded && controller.isEmpty && (
               <QueriesListEmptyState
@@ -133,8 +134,8 @@ class QueriesList extends React.Component {
                 />
               </div>
             )}
-          </Layout.Content>
-        </Layout>
+          </ListPageLayout.Content>
+        </ListPageLayout>
       </div>
     );
   }
@@ -165,7 +166,9 @@ export default [
     path: "/queries",
     title: "Queries",
     render: (routeParams, currentRoute, location) => (
-      <QueriesListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      <Layout.DefaultAuthenticated>
+        <QueriesListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      </Layout.DefaultAuthenticated>
     ),
     resolve: { currentPage: "all" },
   },
@@ -173,7 +176,9 @@ export default [
     path: "/queries/favorites",
     title: "Favorite Queries",
     render: (routeParams, currentRoute, location) => (
-      <QueriesListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      <Layout.DefaultAuthenticated>
+        <QueriesListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      </Layout.DefaultAuthenticated>
     ),
     resolve: { currentPage: "favorites" },
   },
@@ -181,7 +186,9 @@ export default [
     path: "/queries/archive",
     title: "Archived Queries",
     render: (routeParams, currentRoute, location) => (
-      <QueriesListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      <Layout.DefaultAuthenticated>
+        <QueriesListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      </Layout.DefaultAuthenticated>
     ),
     resolve: { currentPage: "archive" },
   },
@@ -189,7 +196,9 @@ export default [
     path: "/queries/my",
     title: "My Queries",
     render: (routeParams, currentRoute, location) => (
-      <QueriesListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      <Layout.DefaultAuthenticated>
+        <QueriesListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      </Layout.DefaultAuthenticated>
     ),
     resolve: { currentPage: "my" },
   },

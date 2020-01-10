@@ -2,6 +2,7 @@ import { includes, map } from "lodash";
 import React from "react";
 import Button from "antd/lib/button";
 
+import { Layout } from "@/components/ApplicationArea";
 import Paginator from "@/components/Paginator";
 
 import { wrap as liveItemsList, ControllerType } from "@/components/items-list/ItemsList";
@@ -16,7 +17,7 @@ import { UserPreviewCard } from "@/components/PreviewCard";
 import GroupName from "@/components/groups/GroupName";
 import ListItemAddon from "@/components/groups/ListItemAddon";
 import Sidebar from "@/components/groups/DetailsPageSidebar";
-import Layout from "@/components/layouts/ContentWithSidebar";
+import ListPageLayout from "@/components/layouts/ContentWithSidebar";
 import wrapSettingsTab from "@/components/SettingsWrapper";
 
 import notification from "@/services/notification";
@@ -138,8 +139,8 @@ class GroupMembers extends React.Component {
     return (
       <div data-test="Group">
         <GroupName className="d-block m-t-0 m-b-15" group={this.group} onChange={() => this.forceUpdate()} />
-        <Layout>
-          <Layout.Sidebar>
+        <ListPageLayout>
+          <ListPageLayout.Sidebar>
             <Sidebar
               controller={controller}
               group={this.group}
@@ -148,8 +149,8 @@ class GroupMembers extends React.Component {
               onAddMembersClick={this.addMembers}
               onGroupDeleted={() => navigateTo("/groups", true)}
             />
-          </Layout.Sidebar>
-          <Layout.Content>
+          </ListPageLayout.Sidebar>
+          <ListPageLayout.Content>
             {!controller.isLoaded && <LoadingState className="" />}
             {controller.isLoaded && controller.isEmpty && (
               <div className="text-center">
@@ -181,8 +182,8 @@ class GroupMembers extends React.Component {
                 />
               </div>
             )}
-          </Layout.Content>
-        </Layout>
+          </ListPageLayout.Content>
+        </ListPageLayout>
       </div>
     );
   }
@@ -192,18 +193,19 @@ const GroupMembersPage = wrapSettingsTab(
   null,
   liveItemsList(
     GroupMembers,
-    () => new ResourceItemsSource({
-      isPlainList: true,
-      getRequest(unused, { params: { groupId } }) {
-        return { id: groupId };
-      },
-      getResource() {
-        return Group.members.bind(Group);
-      },
-      getItemProcessor() {
-        return item => new User(item);
-      },
-    }),
+    () =>
+      new ResourceItemsSource({
+        isPlainList: true,
+        getRequest(unused, { params: { groupId } }) {
+          return { id: groupId };
+        },
+        getResource() {
+          return Group.members.bind(Group);
+        },
+        getItemProcessor() {
+          return item => new User(item);
+        },
+      }),
     () => new StateStorage({ orderByField: "name" })
   )
 );
@@ -213,7 +215,9 @@ export default {
   path: "/groups/:groupId([0-9]+)",
   title: "Group Members",
   render: (routeParams, currentRoute, location) => (
-    <GroupMembersPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+    <Layout.DefaultAuthenticated>
+      <GroupMembersPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+    </Layout.DefaultAuthenticated>
   ),
   resolve: { currentPage: "users" },
 };

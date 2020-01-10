@@ -1,6 +1,7 @@
 import React from "react";
 
 import Button from "antd/lib/button";
+import { Layout } from "@/components/ApplicationArea";
 import Paginator from "@/components/Paginator";
 
 import { wrap as liveItemsList, ControllerType } from "@/components/items-list/ItemsList";
@@ -153,7 +154,9 @@ export default {
   path: "/groups",
   title: "Groups",
   render: (routeParams, currentRoute, location) => (
-    <GroupsListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+    <Layout.DefaultAuthenticated>
+      <GroupsListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+    </Layout.DefaultAuthenticated>
   ),
   resolve: { currentPage: "groups" },
 };

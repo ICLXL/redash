@@ -5,7 +5,8 @@ import React from "react";
 import Alert from "antd/lib/alert";
 import Tabs from "antd/lib/tabs";
 import * as Grid from "antd/lib/grid";
-import Layout from "@/components/admin/Layout";
+import { Layout } from "@/components/ApplicationArea";
+import AdminPageLayout from "@/components/admin/Layout";
 import { CounterCard, QueuesTable, QueriesTable } from "@/components/admin/CeleryStatus";
 
 import { $http } from "@/services/ng";
@@ -80,7 +81,7 @@ class Tasks extends React.Component {
     const { isLoading, error, queues, queries, counters } = this.state;
 
     return (
-      <Layout activeTab="tasks">
+      <AdminPageLayout activeTab="tasks">
         <div className="p-15">
           {error && <Alert type="error" message="Failed loading status. Please refresh." />}
 
@@ -109,7 +110,7 @@ class Tasks extends React.Component {
             </React.Fragment>
           )}
         </div>
-      </Layout>
+      </AdminPageLayout>
     );
   }
 }
@@ -117,6 +118,10 @@ class Tasks extends React.Component {
 export default {
   path: "/admin/queries/tasks",
   title: "Celery Status",
-  render: (routeParams, currentRoute, location) => <Tasks key={location.path} {...routeParams} />,
+  render: (routeParams, currentRoute, location) => (
+    <Layout.DefaultAuthenticated>
+      <Tasks key={location.path} {...routeParams} />
+    </Layout.DefaultAuthenticated>
+  ),
   resolve: { currentPage: "tasks" },
 };

@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import Button from "antd/lib/button";
 import Modal from "antd/lib/modal";
+import { Layout } from "@/components/ApplicationArea";
 import Paginator from "@/components/Paginator";
 import DynamicComponent from "@/components/DynamicComponent";
 import { UserPreviewCard } from "@/components/PreviewCard";
@@ -18,7 +19,7 @@ import EmptyState from "@/components/items-list/components/EmptyState";
 import * as Sidebar from "@/components/items-list/components/Sidebar";
 import ItemsTable, { Columns } from "@/components/items-list/components/ItemsTable";
 
-import Layout from "@/components/layouts/ContentWithSidebar";
+import ListPageLayout from "@/components/layouts/ContentWithSidebar";
 import CreateUserDialog from "@/components/users/CreateUserDialog";
 import wrapSettingsTab from "@/components/SettingsWrapper";
 
@@ -202,8 +203,8 @@ class UsersList extends React.Component {
     return (
       <React.Fragment>
         {this.renderPageHeader()}
-        <Layout>
-          <Layout.Sidebar className="m-b-0">
+        <ListPageLayout>
+          <ListPageLayout.Sidebar className="m-b-0">
             <Sidebar.SearchInput value={controller.searchTerm} onChange={controller.updateSearch} />
             <Sidebar.Menu items={this.sidebarMenu} selected={controller.params.currentPage} />
             <Sidebar.PageSizeSelect
@@ -212,8 +213,8 @@ class UsersList extends React.Component {
               value={controller.itemsPerPage}
               onChange={itemsPerPage => controller.updatePagination({ itemsPerPage })}
             />
-          </Layout.Sidebar>
-          <Layout.Content>
+          </ListPageLayout.Sidebar>
+          <ListPageLayout.Content>
             {!controller.isLoaded && <LoadingState className="" />}
             {controller.isLoaded && controller.isEmpty && <EmptyState className="" />}
             {controller.isLoaded && !controller.isEmpty && (
@@ -234,8 +235,8 @@ class UsersList extends React.Component {
                 />
               </div>
             )}
-          </Layout.Content>
-        </Layout>
+          </ListPageLayout.Content>
+        </ListPageLayout>
       </React.Fragment>
     );
   }
@@ -285,7 +286,9 @@ export default [
     path: "/users",
     title: "Users",
     render: (routeParams, currentRoute, location) => (
-      <UsersListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      <Layout.DefaultAuthenticated>
+        <UsersListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      </Layout.DefaultAuthenticated>
     ),
     resolve: { currentPage: "active" },
   },
@@ -293,7 +296,9 @@ export default [
     path: "/users/new",
     title: "Users",
     render: (routeParams, currentRoute, location) => (
-      <UsersListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      <Layout.DefaultAuthenticated>
+        <UsersListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      </Layout.DefaultAuthenticated>
     ),
     resolve: {
       currentPage: "active",
@@ -304,7 +309,9 @@ export default [
     path: "/users/pending",
     title: "Pending Invitations",
     render: (routeParams, currentRoute, location) => (
-      <UsersListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      <Layout.DefaultAuthenticated>
+        <UsersListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      </Layout.DefaultAuthenticated>
     ),
     resolve: { currentPage: "pending" },
   },
@@ -312,7 +319,9 @@ export default [
     path: "/users/disabled",
     title: "Disabled Users",
     render: (routeParams, currentRoute, location) => (
-      <UsersListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      <Layout.DefaultAuthenticated>
+        <UsersListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      </Layout.DefaultAuthenticated>
     ),
     resolve: { currentPage: "disabled" },
   },

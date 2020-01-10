@@ -5,6 +5,7 @@ import Dropdown from "antd/lib/dropdown";
 import Menu from "antd/lib/menu";
 import Icon from "antd/lib/icon";
 
+import { Layout } from "@/components/ApplicationArea";
 import Paginator from "@/components/Paginator";
 
 import { wrap as liveItemsList, ControllerType } from "@/components/items-list/ItemsList";
@@ -19,7 +20,7 @@ import { DataSourcePreviewCard } from "@/components/PreviewCard";
 import GroupName from "@/components/groups/GroupName";
 import ListItemAddon from "@/components/groups/ListItemAddon";
 import Sidebar from "@/components/groups/DetailsPageSidebar";
-import Layout from "@/components/layouts/ContentWithSidebar";
+import ListPageLayout from "@/components/layouts/ContentWithSidebar";
 import wrapSettingsTab from "@/components/SettingsWrapper";
 
 import notification from "@/services/notification";
@@ -175,8 +176,8 @@ class GroupDataSources extends React.Component {
     return (
       <div data-test="Group">
         <GroupName className="d-block m-t-0 m-b-15" group={this.group} onChange={() => this.forceUpdate()} />
-        <Layout>
-          <Layout.Sidebar>
+        <ListPageLayout>
+          <ListPageLayout.Sidebar>
             <Sidebar
               controller={controller}
               group={this.group}
@@ -185,8 +186,8 @@ class GroupDataSources extends React.Component {
               onAddDataSourcesClick={this.addDataSources}
               onGroupDeleted={() => navigateTo("/groups", true)}
             />
-          </Layout.Sidebar>
-          <Layout.Content>
+          </ListPageLayout.Sidebar>
+          <ListPageLayout.Content>
             {!controller.isLoaded && <LoadingState className="" />}
             {controller.isLoaded && controller.isEmpty && (
               <div className="text-center">
@@ -218,8 +219,8 @@ class GroupDataSources extends React.Component {
                 />
               </div>
             )}
-          </Layout.Content>
-        </Layout>
+          </ListPageLayout.Content>
+        </ListPageLayout>
       </div>
     );
   }
@@ -251,7 +252,9 @@ export default {
   path: "/groups/:groupId([0-9]+)/data_sources",
   title: "Group Data Sources",
   render: (routeParams, currentRoute, location) => (
-    <GroupDataSourcesPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+    <Layout.DefaultAuthenticated>
+      <GroupDataSourcesPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+    </Layout.DefaultAuthenticated>
   ),
   resolve: { currentPage: "datasources" },
 };

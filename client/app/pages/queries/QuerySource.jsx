@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useDebouncedCallback } from "use-debounce";
 import Select from "antd/lib/select";
+import { Layout } from "@/components/ApplicationArea";
 import Resizable from "@/components/Resizable";
 import Parameters from "@/components/Parameters";
 import EditInPlace from "@/components/EditInPlace";
@@ -434,8 +435,11 @@ QuerySource.propTypes = {
 export default [
   {
     path: "/queries/new",
-    layout: "fixed",
-    render: (routeParams, currentRoute, location) => <QuerySource key={location.path} {...routeParams} />,
+    render: (routeParams, currentRoute, location) => (
+      <Layout.DefaultAuthenticated bodyClass="fixed-layout">
+        <QuerySource key={location.path} {...routeParams} />
+      </Layout.DefaultAuthenticated>
+    ),
     resolve: {
       query: () => Query.newQuery(),
     },
@@ -443,7 +447,11 @@ export default [
   {
     path: "/queries/:queryId([0-9]+)/source",
     layout: "fixed",
-    render: (routeParams, currentRoute, location) => <QuerySource key={location.path} {...routeParams} />,
+    render: (routeParams, currentRoute, location) => (
+      <Layout.DefaultAuthenticated bodyClass="fixed-layout">
+        <QuerySource key={location.path} {...routeParams} />
+      </Layout.DefaultAuthenticated>
+    ),
     resolve: {
       query: ({ queryId }) => Query.get({ id: queryId }).$promise,
     },

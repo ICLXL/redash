@@ -2,7 +2,8 @@ import { omit } from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
 
-import Layout from "@/components/admin/Layout";
+import { Layout } from "@/components/ApplicationArea";
+import AdminPageLayout from "@/components/admin/Layout";
 import * as StatusBlock from "@/components/admin/StatusBlock";
 
 import { $http } from "@/services/ng";
@@ -65,7 +66,7 @@ class SystemStatus extends React.Component {
 
   render() {
     return (
-      <Layout activeTab="system_status">
+      <AdminPageLayout activeTab="system_status">
         <div className="system-status-page">
           <div className="system-status-page-blocks">
             <div className="system-status-page-block">
@@ -82,7 +83,7 @@ class SystemStatus extends React.Component {
             </div>
           </div>
         </div>
-      </Layout>
+      </AdminPageLayout>
     );
   }
 }
@@ -91,6 +92,10 @@ class SystemStatus extends React.Component {
 export default {
   path: "/admin/status",
   title: "System Status",
-  render: (routeParams, currentRoute, location) => <SystemStatus key={location.path} {...routeParams} />,
+  render: (routeParams, currentRoute, location) => (
+    <Layout.DefaultAuthenticated>
+      <SystemStatus key={location.path} {...routeParams} />
+    </Layout.DefaultAuthenticated>
+  ),
   resolve: { currentPage: "system_status" },
 };

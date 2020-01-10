@@ -3,11 +3,12 @@ import React from "react";
 
 import Switch from "antd/lib/switch";
 import * as Grid from "antd/lib/grid";
+import { Layout } from "@/components/ApplicationArea";
 import Paginator from "@/components/Paginator";
 import { QueryTagsControl } from "@/components/tags-control/TagsControl";
 import SchedulePhrase from "@/components/queries/SchedulePhrase";
 import TimeAgo from "@/components/TimeAgo";
-import Layout from "@/components/admin/Layout";
+import AdminPageLayout from "@/components/admin/Layout";
 
 import { wrap as itemsList, ControllerType } from "@/components/items-list/ItemsList";
 import { ItemsSource } from "@/components/items-list/classes/ItemsSource";
@@ -89,7 +90,7 @@ class OutdatedQueries extends React.Component {
   render() {
     const { controller } = this.props;
     return (
-      <Layout activeTab={controller.params.currentPage}>
+      <AdminPageLayout activeTab={controller.params.currentPage}>
         <Grid.Row className="m-15">
           <Grid.Col span={16}>
             <div>
@@ -140,7 +141,7 @@ class OutdatedQueries extends React.Component {
             />
           </div>
         )}
-      </Layout>
+      </AdminPageLayout>
     );
   }
 }
@@ -173,7 +174,9 @@ export default {
   path: "/admin/queries/outdated",
   title: "Outdated Queries",
   render: (routeParams, currentRoute, location) => (
-    <OutdatedQueriesPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+    <Layout.DefaultAuthenticated>
+      <OutdatedQueriesPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+    </Layout.DefaultAuthenticated>
   ),
   resolve: { currentPage: "outdated_queries" },
 };

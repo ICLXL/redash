@@ -1,5 +1,6 @@
 import React from "react";
 
+import { Layout } from "@/components/ApplicationArea";
 import PageHeader from "@/components/PageHeader";
 import Paginator from "@/components/Paginator";
 import { DashboardTagsControl } from "@/components/tags-control/TagsControl";
@@ -12,7 +13,7 @@ import LoadingState from "@/components/items-list/components/LoadingState";
 import * as Sidebar from "@/components/items-list/components/Sidebar";
 import ItemsTable, { Columns } from "@/components/items-list/components/ItemsTable";
 
-import Layout from "@/components/layouts/ContentWithSidebar";
+import ListPageLayout from "@/components/layouts/ContentWithSidebar";
 
 import { Dashboard } from "@/services/dashboard";
 
@@ -75,8 +76,8 @@ class DashboardList extends React.Component {
     return (
       <div className="container">
         <PageHeader title={controller.params.title} />
-        <Layout className="m-l-15 m-r-15">
-          <Layout.Sidebar className="m-b-0">
+        <ListPageLayout className="m-l-15 m-r-15">
+          <ListPageLayout.Sidebar className="m-b-0">
             <Sidebar.SearchInput
               placeholder="Search Dashboards..."
               value={controller.searchTerm}
@@ -90,8 +91,8 @@ class DashboardList extends React.Component {
               value={controller.itemsPerPage}
               onChange={itemsPerPage => controller.updatePagination({ itemsPerPage })}
             />
-          </Layout.Sidebar>
-          <Layout.Content>
+          </ListPageLayout.Sidebar>
+          <ListPageLayout.Content>
             {controller.isLoaded ? (
               <div data-test="DashboardLayoutContent">
                 {controller.isEmpty ? (
@@ -121,8 +122,8 @@ class DashboardList extends React.Component {
             ) : (
               <LoadingState />
             )}
-          </Layout.Content>
-        </Layout>
+          </ListPageLayout.Content>
+        </ListPageLayout>
       </div>
     );
   }
@@ -151,7 +152,9 @@ export default [
     path: "/dashboards",
     title: "Dashboards",
     render: (routeParams, currentRoute, location) => (
-      <DashboardListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      <Layout.DefaultAuthenticated>
+        <DashboardListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      </Layout.DefaultAuthenticated>
     ),
     resolve: { currentPage: "all" },
   },
@@ -159,7 +162,9 @@ export default [
     path: "/dashboards/favorites",
     title: "Favorite Dashboards",
     render: (routeParams, currentRoute, location) => (
-      <DashboardListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      <Layout.DefaultAuthenticated>
+        <DashboardListPage key={location.path} routeParams={routeParams} currentRoute={currentRoute} />
+      </Layout.DefaultAuthenticated>
     ),
     resolve: { currentPage: "favorites" },
   },
